@@ -7,6 +7,15 @@ import { Component, computed, signal } from '@angular/core';
   templateUrl: './computed.component.html',
   styleUrl: './computed.component.css'
 })
+/**
+ * The computed value is performance enhanced (lazy evaluated)
+ * 
+ * If a consumer wants/reads a computed value multiple times:
+  - the computation will be done only once
+  - the rest of the calls will use a cached value.
+  - Re-computation is done only when the base signal changes AND
+    the computed value is requested again
+ */
 export class ComputedComponent {
   number = signal(100);
   double = computed(() => {

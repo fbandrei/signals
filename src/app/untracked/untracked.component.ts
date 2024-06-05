@@ -4,21 +4,36 @@ import { Component, computed, effect, signal, untracked } from '@angular/core';
   selector: 'app-untracked',
   standalone: true,
   imports: [],
-  templateUrl: './untracked.component.html',
-  styleUrl: './untracked.component.css'
+  styleUrl: './untracked.component.css',
+  template: `
+  <button (click)="updateCounterOne()">Update Counter 1</button>
+  <button (click)="updateCounterTwo()">Update Counter 2</button>
+  `
 })
+/**
+ * Untracked function allows to read the signal value 
+ * without making it a dependency of the effect function.
+ */
 export class UntrackedComponent {
-
-  counter = signal(0); // counter = signal(1);
+  counterOne = signal(0);
+  counterTwo = signal(0);
 
   constructor() {
     effect(() => {
-      console.log('counter:', this.counter());
-      this.doubleCounter();
-    }, { allowSignalWrites: true });
+      console.log(`Counter 1: ${this.counterOne()}`);
+      untracked(() => {
+        console.log(`Counter 2: ${this.counterTwo()}`);
+      });
+    })
+  };
+
+  updateCounterOne() {
+    // Triggers the effect
+    this.counterOne.update(val => val + 1); 
   }
 
-  doubleCounter() {
-    this.counter.update((value) =>  value * 2);
+  updateCounterTwo() {
+    // Doesn't trigger the effect
+    this.counterTwo.update(val => val + 1);
   }
 }

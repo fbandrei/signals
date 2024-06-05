@@ -8,6 +8,11 @@ import { Component, effect, signal, untracked } from '@angular/core';
   `,
   styleUrl: './allow-signal-writes.component.css'
 })
+
+/**
+ * allowSignalWrites: true 
+ * this option allows you to write to signals in an effect
+ */
 export class AllowSignalWritesComponent {
 
   counter = signal(0);
@@ -18,10 +23,12 @@ export class AllowSignalWritesComponent {
        // this signal will be tracked for changes
       console.log(this.counter());
 
-      // this leads to an infinite loop as the effect is called for each update
+      // this leads to an infinite loop as 
+      // the effect is called for each update
       this.counter.update(val => val + 1); 
 
-      // only update the value of signals which are not tracked
+      // only update the value of signals 
+      // which are not tracked for changes
       this.alphabet.set('abc');
     }, {
       // be careful when using this option
